@@ -1,4 +1,4 @@
-using System.Componentmodel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace ElevenNote.Data.Entities
