@@ -1,5 +1,6 @@
 using ElevenNote.Data;
 using ElevenNote.Data.Entities;
+using ElevenNote.Services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,8 @@ builder.Services.AddDefaultIdentity<UserEntity>(options =>
     .AddRoles<IdentityRole<int>>() 
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
+builder.Services.AddScoped<IUserService, UserService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
