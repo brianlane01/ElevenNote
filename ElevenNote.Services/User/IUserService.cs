@@ -1,7 +1,9 @@
+using ElevenNote.Models.User;
+
 namespace ElevenNote.Services.User
 {
-    public class IUserService
+    public interface IUserService
     {
-        
+        Task<bool> RegisterUserAsnc(UserRegister model);
     }
 }
