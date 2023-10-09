@@ -22,7 +22,7 @@ namespace ElevenNote.Services.User
 
         public async Task<UserDetail?> GetUserByIdAsync(int userId)
         {
-            UserEntity? entity = await _context.User.FindAsync(userId);
+            UserEntity? entity = await _context.Users.FindAsync(userId);
             if(entity is null)
                 return null;
             
