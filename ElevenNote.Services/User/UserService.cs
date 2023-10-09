@@ -1,5 +1,5 @@
 using ElevenNote.Models.User;
-using ElevenNote.Date.Entities;
+using ElevenNote.Data.Entities;
 using ElevenNote.Data;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,7 +7,7 @@ namespace ElevenNote.Services.User
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbCOntext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
 
@@ -19,6 +19,26 @@ namespace ElevenNote.Services.User
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
+        public async Task<UserDetail?> GetUserByIdAsync(int userId)
+        {
+            UserEntity? entity = await _context.User.FindAsync(userId);
+            if(entity is null)
+                return null;
+            
+            UserDetail detail = new UserDetail()
+            {
+                Id = entity.Id,
+                Email = entity.Email,
+                UserName = entity.UserName!,
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                DateCreated = entity.DateCreated
+            };
+
+            return detail;
+        }
+
         public async Task<bool> RegisterUserAsync(UserRegister model)
         {   
             if(await CheckEmailAvailability(model.Email) == false)

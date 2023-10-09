@@ -4,6 +4,7 @@ namespace ElevenNote.Services.User
 {
     public interface IUserService
     {
-        Task<bool> RegisterUserAsnc(UserRegister model);
+        Task<bool> RegisterUserAsync(UserRegister model);
+        Task<UserDetail?> GetUserByIdAsync(int userId);
     }
 }

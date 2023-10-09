@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 
 namespace ElevenNote.Models.User
 {
@@ -11,7 +10,7 @@ namespace ElevenNote.Models.User
         [Required, MinLength(4)]
         public string UserName { get; set; } = string.Empty;
 
-        [Require, MinLength(4)]
+        [Required, MinLength(4)]
         public string Password { get; set; } = string.Empty;
 
         [Compare(nameof(Password))]
