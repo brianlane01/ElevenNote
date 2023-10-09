@@ -7,6 +7,7 @@ using ElevenNote.Services.User;
 using ElevenNote.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElevenNote.WebApi.Controllers
 {
@@ -31,13 +32,14 @@ namespace ElevenNote.WebApi.Controllers
             var registerResult = await _userService.RegisterUserAsync(model);
             if(registerResult)
             {
-                TextResponse response = new("User was regitered.");
+                TextResponse response = new("User was registered.");
                 return Ok(response);
             }
 
             return BadRequest(new TextResponse("User could not be registered."));
         }
 
+        [Authorize]
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetById([FromRoute] int userId)
         {
