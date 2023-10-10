@@ -64,11 +64,28 @@ namespace ElevenNote.Services.Note
                 {
                     Id = entity.Id,
                     Title = entity.Title,
+                    Content = entity.Content,
                     CreatedUtc = entity.CreatedUtc
                 })
                 .ToListAsync();
 
             return notes;
         }
+
+        public async Task<NoteDetail?> GetNoteByIdAsync(int noteId)
+        {
+            NoteEntity? entity = await _dbContext.Notes
+                .FirstOrDefaultAsync(e => e.Id == noteId && e.OwnerId == _userId);
+
+            return entity is null ? null : new NoteDetail
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                Content = entity.Content,
+                CreatedUtc = entity.CreatedUtc,
+                ModifiedUtc = entity.ModifiedUtc
+            };
+        }
+
     }
 }
