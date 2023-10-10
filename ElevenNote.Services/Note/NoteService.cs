@@ -87,5 +87,30 @@ namespace ElevenNote.Services.Note
             };
         }
 
+        public async Task<bool> UpdateNoteAsync(NoteUpdate request)
+        {
+            //* Find the note and validate it's owned by the user
+            NoteEntity? entity = await _dbContext.Notes.FindAsync(request.Id);
+
+            //*By using the null operator we can check if it's null 
+            //? And at the ame time we chack the OwnerId vs the _userId
+
+            if(entity?.OwnerId != _userId)
+            {
+                return false;
+            }
+
+            //* Now we update the entity's properties
+            entity.Title = request.Title;
+            entity.Content = request.Content;
+            entity.ModifiedUtc = DateTimeOffset.Now;
+
+            //* Save the changes to the database and capture how many rows were updated
+            int numberOfChanges = await _dbContext.SaveChangesAsync();
+            
+            //* numberOfChanges is stated to be equal to 1 because only one row is updated
+            return numberOfChanges == 1;
+        }
+
     }
 }
