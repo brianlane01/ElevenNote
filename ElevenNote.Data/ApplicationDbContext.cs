@@ -10,10 +10,16 @@ namespace ElevenNote.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {}
 
+        public DbSet<NoteEntity> Notes {get; set;} = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserEntity>().ToTable("Users");
+            modelBuilder.Entity<NoteEntity>()
+                .HasOne(n => n.Owner)
+                .WithMany(u => u.Notes)
+                .HasForeignKey(n => n.OwnerId);
         }
     }
 }
