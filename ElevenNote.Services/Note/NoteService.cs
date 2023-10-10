@@ -28,6 +28,34 @@ namespace ElevenNote.Services.Note
             _dbContext = dbContext;
         }
 
+        public async Task<NoteListItem?> CreateNoteAsync(NoteCreate request)
+        {
+            NoteEntity entity = new()
+            {
+                Title = request.Title,
+                Content = request.Content,
+                OwnerId = _userId,
+                CreatedUtc = DateTimeOffset.Now
+            };
+
+            _dbContext.Notes.Add(entity);
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            if(numberOfChanges != 1)
+            {
+                return null;
+            }
+
+            NoteListItem response = new()
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                CreatedUtc = entity.CreatedUtc
+            };
+
+            return response;
+        }
+
         public async Task<IEnumerable<NoteListItem>> GetAllNotesAsync()
         {
             List<NoteListItem> notes = await _dbContext.Notes 

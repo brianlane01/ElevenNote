@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElevenNote.Services.Note;
+using ElevenNote.Models.Note;
+using ElevenNote.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,23 @@ namespace ElevenNote.WebApi.Controllers
             _noteService = noteService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateNote([FromBody] NoteCreate request)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = await _noteService.CreateNoteAsync(request);
+            if (response is not null)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(new TextResponse("Could not create note."));
+        }
+        
         [HttpGet]
         public async Task<IActionResult> GetAllNotes()
         {
