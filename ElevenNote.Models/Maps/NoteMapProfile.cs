@@ -14,6 +14,10 @@ namespace ElevenNote.Models.Maps
             CreateMap<NoteCreate, NoteEntity>()
                 .ForMember(note => note.CreatedUtc, opt => opt
                 .MapFrom(src => DateTimeOffset.Now));
+
+            CreateMap<NoteUpdate, NoteEntity>()
+                .ForMember(note => note.ModifiedUtc, opt => opt
+                .MapFrom(src => DateTimeOffset.Now));
         }
 
     }

@@ -16,35 +16,37 @@ namespace ElevenNote.Services.Note
         private readonly int _userId;
         private readonly IMapper _mapper;
 
-        // public NoteService(UserManager<UserEntity> userManager,
-        //                     SignInManager<UserEntity> signInManager,
-        //                     ApplicationDbContext dbContext)
-        // {
-        //     var currentUser = signInManager.Context.User;
-        //     var userIdClaim = userManager.GetUserId(currentUser);
-        //     var hasValidId = int.TryParse(userIdClaim, out _userId);
-
-        //     if(hasValidId == false)
-        //     {
-        //         throw new Exception("Attempted to build NoteService without Id Claim.");
-        //     }
-
-        //     _dbContext = dbContext;
-        // }
-
-        public NoteService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext, IMapper mapper)
+        public NoteService(UserManager<UserEntity> userManager,
+                            SignInManager<UserEntity> signInManager,
+                            ApplicationDbContext dbContext,
+                            IMapper mapper)
         {
-            var userClaims = httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var currentUser = signInManager.Context.User;
+            var userIdClaim = userManager.GetUserId(currentUser);
+            var hasValidId = int.TryParse(userIdClaim, out _userId);
 
-            var value = userClaims?.FindFirst("id")?.Value;
+            if(hasValidId == false)
+            {
+                throw new Exception("Attempted to build NoteService without Id Claim.");
+            }
 
-            var validId = int.TryParse(value, out _userId);
-
-            if (!validId)
-                throw new Exception("Attempted to build NoteService without User Id claim.");
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+        // public NoteService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext, IMapper mapper)
+        // {
+        //     var userClaims = httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+
+        //     var value = userClaims?.FindFirst("id")?.Value;
+
+        //     var validId = int.TryParse(value, out _userId);
+
+        //     if (!validId)
+        //         throw new Exception("Attempted to build NoteService without User Id claim.");
+        //     _dbContext = dbContext;
+        //     _mapper = mapper;
+        // }
 
         // public async Task<NoteListItem?> CreateNoteAsync(NoteCreate request)
         // {
