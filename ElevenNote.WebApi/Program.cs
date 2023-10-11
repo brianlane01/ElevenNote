@@ -5,6 +5,7 @@ using ElevenNote.Services.Token;
 using ElevenNote.Data;
 using ElevenNote.Data.Entities;
 using ElevenNote.Services.User;
+using ElevenNote.Models.Maps;
 using ElevenNote.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ builder.Services.AddScoped<INoteService, NoteService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(NoteMapProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

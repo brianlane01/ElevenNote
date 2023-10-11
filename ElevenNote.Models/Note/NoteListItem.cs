@@ -1,3 +1,6 @@
+using System;
+using AutoMapper;
+
 namespace ElevenNote.Models.Note
 {
     public class NoteListItem
